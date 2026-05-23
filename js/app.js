@@ -5,7 +5,7 @@ const STORAGE_KEY = "iwt_exam_results";
 const DRAFT_KEY = "iwt_exam_draft";
 
 // Google Apps Script Web App URL — paste yours here after setup
-let SUBMIT_URL = ""; // e.g. "https://script.google.com/macros/s/YOUR_ID/exec"
+let SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxdxjzNYI2RlrheqU9DN-ynnPBdPIfT1q0Ywio7nuddtPq2_Obcg2EziLd4xgXK0Ffz/exec"; // e.g. "https://script.google.com/macros/s/YOUR_ID/exec"
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let state = {
