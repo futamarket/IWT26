@@ -1,6 +1,6 @@
 // ── CONFIG ──────────────────────────────────────────────────────────────────
 const EXAM_DURATION = 100 * 60; // 100 minutes in seconds
-const ADMIN_PASSWORD = "DLCF@Admin2025";
+const ADMIN_PASSWORD = "IWTpassword";
 const STORAGE_KEY = "iwt_exam_results";
 const DRAFT_KEY = "iwt_exam_draft";
 
