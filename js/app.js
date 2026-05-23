@@ -6,6 +6,19 @@ const DRAFT_KEY = "iwt_exam_draft";
 
 // Google Apps Script Web App URL — paste yours here after setup
 let SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxdxjzNYI2RlrheqU9DN-ynnPBdPIfT1q0Ywio7nuddtPq2_Obcg2EziLd4xgXK0Ffz/exec"; // e.g. "https://script.google.com/macros/s/YOUR_ID/exec"
+const DRAFT_KEY = "iwt_exam_draft";
+
+function saveDraft() {
+  if (!state.examStarted || state.submitted) return;
+  sessionStorage.setItem(DRAFT_KEY, JSON.stringify({
+    student: state.student, currentSection: state.currentSection,
+    answers: state.answers, timeLeft: state.timeLeft,
+  }));
+}
+function loadDraft() {
+  try { const r = sessionStorage.getItem(DRAFT_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
+}
+function clearDraft() { sessionStorage.removeItem(DRAFT_KEY); }
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let state = {
@@ -58,6 +71,7 @@ function startTimer() {
   state.timerInterval = setInterval(() => {
     state.timeLeft--;
     updateTimerDisplay();
+    if (state.timeLeft % 15 === 0) saveDraft();
     if (state.timeLeft <= 0) {
       clearInterval(state.timerInterval);
       autoSubmit();
@@ -156,6 +170,7 @@ function selectAnswer(qIndex, optIndex) {
   const answered = Object.keys(state.answers[secKey]).length;
   const tabs = document.querySelectorAll(".tab-btn");
   if (answered === 40) tabs[state.currentSection].classList.add("completed");
+  saveDraft();
 }
 
 function updateFooter() {
@@ -257,6 +272,7 @@ function submitExam() {
   // Show success screen
   $("submitted-name").textContent = state.student.name;
   $("submitted-matric").textContent = state.student.matric;
+  clearDraft();
   show("screen-submitted");
 }
 
@@ -271,7 +287,7 @@ function adminLogin() {
     adminLoggedIn = true;
     $("admin-login-section").classList.add("hidden");
     $("admin-dashboard").classList.remove("hidden");
-    renderAdminDashboard();
+    loadAdminResults();
   } else {
     $("admin-error").textContent = "Incorrect password.";
     $("admin-error").classList.remove("hidden");
@@ -287,8 +303,30 @@ function adminLogout() {
   show("screen-landing");
 }
 
-function renderAdminDashboard() {
-  const results = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+async function loadAdminResults() {
+  $("admin-loading").classList.remove("hidden");
+  $("admin-dashboard-content").classList.add("hidden");
+  let results = [];
+  if (SUBMIT_URL) {
+    try {
+      const resp = await fetch(SUBMIT_URL + "?action=getResults");
+      const data = await resp.json();
+      if (Array.isArray(data)) results = data;
+    } catch(err) {
+      console.warn("Cloud fetch failed, using local:", err);
+      results = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    }
+  } else {
+    results = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }
+  $("admin-loading").classList.add("hidden");
+  $("admin-dashboard-content").classList.remove("hidden");
+  renderAdminDashboard(results);
+}
+
+function refreshResults() { loadAdminResults(); }
+
+function renderAdminDashboard(results) {
 
   // Stats
   $("stat-total").textContent = results.length;
@@ -360,8 +398,30 @@ function clearResults() {
   }
 }
 
+function newStudent() {
+  state.student = { name:"", matric:"", level:"", gender:"" };
+  state.currentSection = 0;
+  state.answers = { wtc101:{}, wtc102:{}, wtc103:{}, wtc104:{}, wtc105:{} };
+  state.timeLeft = EXAM_DURATION;
+  state.submitted = false;
+  state.examStarted = false;
+  clearDraft();
+  $("inp-name").value = $("inp-matric").value = $("inp-level").value = $("inp-gender").value = "";
+  show("screen-landing");
+}
+
 // ── KEYBOARD ENTER ────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+  const draft = loadDraft();
+  if (draft) {
+    const resume = confirm(`Welcome back, ${draft.student.name}!\nExam in progress — ${Math.floor(draft.timeLeft/60)}m ${draft.timeLeft%60}s remaining.\nResume?`);
+    if (resume) {
+      state.student = draft.student; state.currentSection = draft.currentSection;
+      state.answers = draft.answers; state.timeLeft = draft.timeLeft;
+      state.submitted = false; state.examStarted = true;
+      show("screen-exam"); renderSection(); startTimer();
+    } else { clearDraft(); }
+  }
   ["inp-name","inp-matric","inp-level","inp-gender"].forEach(id => {
     $(id)?.addEventListener("keydown", e => { if (e.key === "Enter") startExam(); });
   });
