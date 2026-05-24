@@ -6,7 +6,7 @@ const ATTEMPTED_KEY  = "iwt_attempted_matrics"; // one-attempt lock
 const DRAFT_KEY      = "iwt_exam_draft";     // in-progress session (refresh recovery)
 
 // ✏️ Paste your Google Apps Script Web App URL here
-let SUBMIT_URL = ""; // e.g. "https://script.google.com/macros/s/AKfy.../exec"
+let SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxdxjzNYI2RlrheqU9DN-ynnPBdPIfT1q0Ywio7nuddtPq2_Obcg2EziLd4xgXK0Ffz/exec"; // e.g. "https://script.google.com/macros/s/AKfy.../exec"
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let state = {
