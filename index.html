@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DLCF FUTA – IWT 2026 Examination</title>
+  <title>DLCF FUTA – IWT 2025 Examination</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✝️</text></svg>" />
 </head>
@@ -15,7 +15,7 @@
 <div id="screen-landing" class="screen active">
   <div class="landing-card">
     <div class="landing-logo">✝</div>
-    <h1>DLCF FUTA<br>IWT 2026 Examinations</h1>
+    <h1>DLCF FUTA<br>IWT 2025 Examinations</h1>
     <p class="subtitle">Intending Workers Training — Computer Based Test</p>
 
     <div class="exam-rules">
@@ -23,32 +23,34 @@
       <ul>
         <li>5 Courses · 40 Questions each · 200 Questions total</li>
         <li>Duration: <strong>100 Minutes</strong> — timer starts immediately</li>
-        <li>Navigate freely between sections using the tabs</li>
-        <li>Answers auto-save as you select them</li>
-        <li>Do not refresh or close the browser during the exam</li>
-        <li>Results are submitted to the admin upon completion</li>
+        <li>You can navigate <strong>freely between sections</strong> at any time</li>
+        <li>Answers are saved automatically as you select them</li>
+        <li>Each matric number can only sit this exam <strong>once</strong></li>
+        <li>Do not close the browser — progress is saved if you refresh</li>
       </ul>
     </div>
 
     <div class="form-group">
       <label>Full Name</label>
-      <input type="text" id="inp-name" placeholder="e.g. Odejinmi Oluwatosin Meshach" autocomplete="name" />
+      <input type="text" id="inp-name" placeholder="e.g. Oluwatosin Odejinmi" autocomplete="name" />
     </div>
     <div class="form-group">
       <label>Matric Number</label>
-      <input type="text" id="inp-matric" placeholder="e.g. WTC/26/000" autocomplete="off" />
+      <input type="text" id="inp-matric" placeholder="e.g. FUT/MTE/21/0001" autocomplete="off" />
     </div>
     <div class="form-group">
       <label>Level</label>
       <select id="inp-level">
         <option value="">— Select Level —</option>
-        <option value="PDS/UABS">PDS/UABS</option>
+        <option value="Pre-Degree">Pre-Degree</option>
         <option value="100">100 Level</option>
         <option value="200">200 Level</option>
         <option value="300">300 Level</option>
         <option value="400">400 Level</option>
         <option value="500">500 Level</option>
-        <option value="Post-Graduate">Post-Graduate</option>
+        <option value="PGD">PGD</option>
+        <option value="Masters">Masters</option>
+        <option value="PhD">PhD</option>
       </select>
     </div>
     <div class="form-group">
@@ -60,7 +62,7 @@
       </select>
     </div>
 
-    <div id="error-msg" class="hidden" style="color:#c62828;font-size:0.85rem;margin:8px 0;font-weight:600;"></div>
+    <div id="error-msg" class="hidden" style="color:#c62828;font-size:0.85rem;margin:8px 0;font-weight:600;padding:8px 10px;background:#ffebee;border-radius:8px;"></div>
 
     <button class="btn-primary" onclick="startExam()">▶ Start Examination</button>
 
@@ -76,45 +78,37 @@
 ═══════════════════════════════════════════════════════════ -->
 <div id="screen-exam" class="screen">
 
-  <!-- Fixed Header -->
   <div class="exam-header">
     <div class="exam-header-top">
       <h2>IWT 2025 Examination</h2>
       <div class="timer-box" id="timer-box">
-        ⏱ <span id="timer-display">1:40:00</span>
+        ⏱ <span id="timer-display">01:40</span>
       </div>
     </div>
 
-    <!-- Section Tabs -->
     <div class="section-tabs">
       <button class="tab-btn active" onclick="jumpToSection(0)">WTC 101</button>
-      <button class="tab-btn" onclick="jumpToSection(1)">WTC 102</button>
-      <button class="tab-btn" onclick="jumpToSection(2)">WTC 103</button>
-      <button class="tab-btn" onclick="jumpToSection(3)">WTC 104</button>
-      <button class="tab-btn" onclick="jumpToSection(4)">WTC 105</button>
+      <button class="tab-btn"        onclick="jumpToSection(1)">WTC 102</button>
+      <button class="tab-btn"        onclick="jumpToSection(2)">WTC 103</button>
+      <button class="tab-btn"        onclick="jumpToSection(3)">WTC 104</button>
+      <button class="tab-btn"        onclick="jumpToSection(4)">WTC 105</button>
     </div>
 
-    <!-- Progress Bar -->
     <div class="exam-progress-bar">
       <div class="exam-progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
   </div>
 
-  <!-- Scrollable Body -->
   <div class="exam-body">
-    <!-- Section Banner -->
     <div class="section-info">
       <h3 id="section-title">WTC 101: Qualifications of Christian Workers</h3>
       <p id="section-subtitle">Section 1 of 5 · 40 Questions</p>
     </div>
-
-    <!-- Questions -->
     <div id="questions-container"></div>
   </div>
 
-  <!-- Sticky Footer Navigation -->
   <div class="exam-footer">
-    <button class="nav-btn" id="btn-prev" onclick="navigateSection(-1)">← Previous</button>
+    <button class="nav-btn" id="btn-prev" onclick="navigateSection(-1)">← Prev</button>
     <div class="progress-text" id="footer-progress">0/40 answered</div>
     <button class="nav-btn" id="btn-next" onclick="navigateSection(1)">Next →</button>
     <button class="nav-btn submit hidden" id="btn-submit" onclick="confirmSubmit()">✔ Submit</button>
@@ -138,21 +132,23 @@
 
     <p>
       Thank you for completing the <strong>DLCF FUTA IWT 2025 Examination</strong>.
-      Your results have been submitted to the admin and will be reviewed accordingly.
+      Your results have been submitted and will be reviewed by the admin.
       God bless you as you serve faithfully! 🙏
     </p>
 
     <div style="margin-top:16px;padding:14px;background:#e8eaf6;border-radius:10px;font-size:0.83rem;color:#444;line-height:1.6;">
       <strong>What's Next?</strong><br>
-      Results will be communicated through the fellowship leadership. 
-      Continue to be steadfast, immovable, and always abounding in the work of the Lord 
+      Results will be communicated through the fellowship leadership.
+      Continue to be steadfast, immovable, and always abounding in the work of the Lord
       (1 Cor. 15:58).
     </div>
+
+    <!-- Next student button -->
+    <button class="btn-primary" onclick="newStudent()" style="margin-top:20px;">
+      👤 Next Student
+    </button>
   </div>
 </div>
-  <button class="btn-primary" onclick="newStudent()" style="margin-top:20px;">
-  👤 Next Student
-</button>
 
 
 <!-- ══════════════════════════════════════════════════════════
@@ -160,13 +156,13 @@
 ═══════════════════════════════════════════════════════════ -->
 <div id="screen-admin" class="screen">
   <div class="admin-header">
-    <h1>🔐 Admin Dashboard — IWT 2026</h1>
+    <h1>🔐 Admin Dashboard — IWT 2025</h1>
     <button class="btn-sm btn-logout" onclick="adminLogout()">Logout</button>
   </div>
 
   <div class="admin-body">
 
-    <!-- Login Box -->
+    <!-- Login -->
     <div id="admin-login-section" class="admin-login-box">
       <h2>🔑 Admin Login</h2>
       <div class="form-group">
@@ -181,72 +177,80 @@
     </div>
 
     <!-- Dashboard -->
+    <div id="admin-dashboard" class="hidden">
 
-    <div id="admin-loading" style="text-align:center;padding:40px;color:#1a237e;font-weight:600;">
+      <!-- Loading spinner -->
+      <div id="admin-loading" style="text-align:center;padding:40px;color:#1a237e;font-weight:600;font-size:0.9rem;">
         ⏳ Loading results from cloud...
-    </div>
-    <div id="admin-dashboard-content" class="hidden">
-
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-num" id="stat-total">0</div>
-          <div class="stat-label">Total Submissions</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-avg">—</div>
-          <div class="stat-label">Average Score</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-highest">—</div>
-          <div class="stat-label">Highest Score</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">200</div>
-          <div class="stat-label">Total Questions</div>
-        </div>
-      </div>
       </div>
 
-      <!-- Results Table -->
-      <div class="results-table-wrap">
-        <h3>
-          Student Results
-          <div style="display:flex;gap:8px;">
-            <button class="btn-sm" style="background:#e8eaf6;color:#1a237e;" onclick="refreshResults()">🔄 Refresh</button>
-            <button class="btn-sm btn-export" onclick="exportCSV()">⬇ Export CSV</button>
-            <button class="btn-sm btn-clear" onclick="clearResults()">🗑 Clear All</button>
+      <!-- Content (hidden until loaded) -->
+      <div id="admin-dashboard-content" class="hidden">
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">Total Submissions</div>
           </div>
-        </h3>
-        <div style="overflow-x:auto;">
-          <table class="results-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Matric</th>
-                <th>Level</th>
-                <th>WTC101</th>
-                <th>WTC102</th>
-                <th>WTC103</th>
-                <th>WTC104</th>
-                <th>WTC105</th>
-                <th>Total</th>
-                <th>%</th>
-                <th>Time</th>
-                <th>Submitted At</th>
-              </tr>
-            </thead>
-            <tbody id="results-tbody">
-              <tr><td colspan="13" class="empty-state">No submissions yet.</td></tr>
-            </tbody>
-          </table>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-avg">—</div>
+            <div class="stat-label">Average Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-highest">—</div>
+            <div class="stat-label">Highest Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">200</div>
+            <div class="stat-label">Total Questions</div>
+          </div>
         </div>
-      </div>
-    </div>
+
+        <div class="results-table-wrap">
+          <h3>
+            Student Results
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-sm" style="background:#e8eaf6;color:#1a237e;" onclick="refreshResults()">🔄 Refresh</button>
+              <button class="btn-sm btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+              <button class="btn-sm btn-clear" onclick="clearResults()">🗑 Clear Local</button>
+            </div>
+          </h3>
+          <div style="overflow-x:auto;">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Matric</th>
+                  <th>Level</th>
+                  <th>WTC101</th>
+                  <th>WTC102</th>
+                  <th>WTC103</th>
+                  <th>WTC104</th>
+                  <th>WTC105</th>
+                  <th>Total</th>
+                  <th>%</th>
+                  <th>Time</th>
+                  <th>Submitted At</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody">
+                <tr><td colspan="13" class="empty-state">No submissions yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;background:white;border-radius:12px;padding:16px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.06);font-size:0.82rem;color:#666;line-height:1.7;">
+          ☁️ <strong>Cloud source:</strong> Results are fetched live from your Google Sheet each time you open the dashboard. 
+          Click <strong>🔄 Refresh</strong> to reload after new submissions arrive. 
+          If cloud fetch fails, local device results are shown as fallback.
+        </div>
+
+      </div><!-- /admin-dashboard-content -->
+    </div><!-- /admin-dashboard -->
   </div>
 </div>
-
 
 <script src="data/questions.js"></script>
 <script src="js/app.js"></script>
