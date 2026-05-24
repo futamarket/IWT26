@@ -1,6 +1,6 @@
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 const EXAM_DURATION  = 100 * 60; // 100 minutes
-const ADMIN_PASSWORD = "DLCF@Admin2025";
+const ADMIN_PASSWORD = "iwtpassword";
 const STORAGE_KEY    = "iwt_exam_results";   // local results (fallback)
 const ATTEMPTED_KEY  = "iwt_attempted_matrics"; // one-attempt lock
 const DRAFT_KEY      = "iwt_exam_draft";     // in-progress session (refresh recovery)
