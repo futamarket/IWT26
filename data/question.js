@@ -233,4 +233,3 @@ questions: [
 { q: “Which is NOT expected in pulpit decorum?”, opts: [“Modest dressing”, “Worldly jokes”, “Adequate prayer”, “Humility”], ans: 1 },
 ]
 }
-};
