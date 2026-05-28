@@ -1,5 +1,5 @@
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-const EXAM_DURATION  = 100 * 60; // 100 minutes
+const EXAM_DURATION  = 60 * 60; // 60 minutes
 const ADMIN_PASSWORD = "iwtpassword";
 const STORAGE_KEY    = "iwt_exam_results";   // local results (fallback)
 const ATTEMPTED_KEY  = "iwt_attempted_matrics"; // one-attempt lock
